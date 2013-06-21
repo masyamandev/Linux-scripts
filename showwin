@@ -1,0 +1,6 @@
+#!/bin/bash
+if (wmctrl -l -x | grep -i $1 > /dev/null) then
+wmctrl -a $1 -x
+else
+$2&
+fi

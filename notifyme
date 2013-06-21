@@ -1,0 +1,16 @@
+#!/bin/bash
+START_TIME=`date +%s`
+"$@"
+ERROR_CODE=$?
+END_TIME=`date +%s`
+INTERVAL=`expr $END_TIME - $START_TIME`
+INTERVALSTR=`date +"%H:%M:%S" -u -d @$INTERVAL`
+#echo "start: $START_TIME, end: $END_TIME, duration: $INTERVALSTR ($INTERVAL), exit code: $ERROR_CODE"
+if [ $ERROR_CODE -gt 0 ]
+then
+    notify-send -i /usr/share/icons/Humanity/status/64/dialog-warning.svg "$1" "Finished in $INTERVALSTR.\nError: $ERROR_CODE"
+    #notify-send -i /usr/share/icons/Mint-X/status/48/dialog-warning.png "$1" "Finished in $INTERVALSTR.\nError: $ERROR_CODE"
+else
+    notify-send -i /usr/share/icons/Humanity/actions/64/gtk-info.svg "$1 ($ERROR_CODE)" "Finished in $INTERVALSTR."
+    #notify-send -i /usr/share/icons/Mint-X/actions/48/gtk-info.png "$1" "Finished in $INTERVALSTR."
+fi

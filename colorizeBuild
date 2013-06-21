@@ -1,0 +1,34 @@
+#!/bin/bash
+
+function echoColor {
+	if [ $# -ge 2 ]; then
+		#echo "$1"
+		echo -e "\e[$2m$1\e[00m"
+	fi
+}
+
+IFS='' # don't remove leading whitespaces
+while read -e LOG_LINE
+do
+	if [[ $LOG_LINE == *"ERROR"* ]]; then
+		echoColor "$LOG_LINE" "1;31"
+	elif [[ $LOG_LINE == *"BUILD FAILURE"* ]]; then
+		echoColor "$LOG_LINE" "1;31"
+	elif [[ $LOG_LINE == *"BUILD SUCCESS"* ]]; then
+		echoColor "$LOG_LINE" "1;32"
+#	elif [[ $LOG_LINE == *"SKIPPED"* ]]; then
+#		echoColor "$LOG_LINE" "1;33"
+	elif [[ $LOG_LINE == *"Tests run:"* ]]; then
+		echoColor "$LOG_LINE" "1;34"
+	elif [[ $LOG_LINE == *"[INFO] Building"*"SNAPSHOT" ]]; then
+		echoColor "$LOG_LINE" "1;34"
+#	elif [[ $LOG_LINE == *"-----"* ]]; then
+#		echoColor "$LOG_LINE" "0;34"
+	elif [[ $LOG_LINE == *"WARN"* ]]; then
+		echoColor "$LOG_LINE" "1;33"
+	elif [[ $LOG_LINE == *"SYSOUT"* ]]; then
+		echoColor "$LOG_LINE" "0;33"
+	else
+		echoColor "$LOG_LINE" "00"
+	fi
+done

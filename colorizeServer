@@ -1,0 +1,49 @@
+#!/bin/bash
+echo AppServer notificator started
+
+LAST_SHOW_TIME=0
+
+function notify {
+	CURRENT_TIME=`date +%s`
+	INTERVAL=`expr $CURRENT_TIME - $LAST_SHOW_TIME`
+	if [ $INTERVAL -gt 1 ]
+	then
+		notify-send -i "$1" "$2" "$3"
+	fi
+	LAST_SHOW_TIME=$CURRENT_TIME
+}
+
+function echoColor {
+	if [ $# -ge 2 ]; then
+		#echo "$1"
+		echo -e "\e[$2m$1\e[00m"
+	fi
+}
+
+ERROR_ICON="/usr/share/icons/Humanity/status/64/dialog-warning.svg"
+INFO_ICON="/usr/share/icons/Humanity/actions/64/gtk-info.svg"
+
+IFS='' # don't remove leading whitespaces
+while read -e LOG_LINE
+do
+	if [[ $LOG_LINE == *"ERROR"* ]]; then
+		echoColor "$LOG_LINE" "1;31"
+		notify "$ERROR_ICON" "AppServer" "$LOG_LINE"
+	elif [[ $LOG_LINE == *"Started in"* ]] || [[ $LOG_LINE == *"startup in"* ]] || [[ $LOG_LINE == *"Started Jetty Server"* ]] ; then
+		echoColor "$LOG_LINE" "1;32"
+		notify "$INFO_ICON" "AppServer" "$LOG_LINE"
+	elif [[ $LOG_LINE == *"(JBoss Shutdown Hook:) Shutdown complete"* ]]; then
+		echoColor "$LOG_LINE" "1;32"
+		notify "$INFO_ICON" "AppServer" "$LOG_LINE"
+	elif [[ $LOG_LINE == *"WARN"* ]]; then
+		echoColor "$LOG_LINE" "1;33"
+	elif [[ $LOG_LINE == *"DEBUG"* ]]; then
+		echoColor "$LOG_LINE" "0;37"
+	elif [[ $LOG_LINE == *"SYSOUT"* ]]; then
+		echoColor "$LOG_LINE" "0;33"
+	else
+		echoColor "$LOG_LINE" "00"
+	fi
+done
+
+echo AppServer notificator finished
