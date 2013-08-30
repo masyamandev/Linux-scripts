@@ -14,3 +14,4 @@ else
     notify-send -i /usr/share/icons/Humanity/actions/64/gtk-info.svg "$1 ($ERROR_CODE)" "Finished in $INTERVALSTR."
     #notify-send -i /usr/share/icons/Mint-X/actions/48/gtk-info.png "$1" "Finished in $INTERVALSTR."
 fi
+exit $ERROR_CODE

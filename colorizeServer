@@ -29,6 +29,8 @@ do
 	if [[ $LOG_LINE == *"ERROR"* ]]; then
 		echoColor "$LOG_LINE" "1;31"
 		notify "$ERROR_ICON" "AppServer" "$LOG_LINE"
+	elif [[ $LOG_LINE == *"Deploying web application archive"* ]] ; then
+		echoColor "$LOG_LINE" "1;34"
 	elif [[ $LOG_LINE == *"Started in"* ]] || [[ $LOG_LINE == *"startup in"* ]] || [[ $LOG_LINE == *"Started Jetty Server"* ]] ; then
 		echoColor "$LOG_LINE" "1;32"
 		notify "$INFO_ICON" "AppServer" "$LOG_LINE"
