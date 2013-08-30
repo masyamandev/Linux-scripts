@@ -1,0 +1,8 @@
+#!/bin/bash
+PWD=`pwd`
+cd ~/Applications/tomcat7/bin
+rm -rf ../webapps/myapp
+JAVA_OPTS="$JAVA_OPTS -Dsolr.solr.home=\"~/Applications/solr-home\""
+echo $JAVA_OPTS
+./catalina.sh run | colorizeServer
+cd $PWD

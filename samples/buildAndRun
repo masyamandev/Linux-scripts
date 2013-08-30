@@ -1,0 +1,16 @@
+#!/bin/bash
+PWD=`pwd`
+cd ~/workspace/MyProject
+
+mvnc clean install -Dmaven.test.skip=true -T 4
+
+ERROR_CODE=$?
+if [ $ERROR_CODE -gt 0 ]
+then
+    echo Build failed. Tomcat is not running.
+else
+    echo Build successful. Starting Tomcat.
+    tomcat
+fi
+
+cd $PWD
