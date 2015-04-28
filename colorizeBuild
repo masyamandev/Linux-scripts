@@ -12,6 +12,8 @@ while read -e LOG_LINE
 do
 	if [[ $LOG_LINE == *"ERROR"* ]]; then
 		echoColor "$LOG_LINE" "1;31"
+	elif [[ $LOG_LINE == *"FAILURE"* ]]; then
+		echoColor "$LOG_LINE" "1;31"
 	elif [[ $LOG_LINE == *"BUILD FAILURE"* ]]; then
 		echoColor "$LOG_LINE" "1;31"
 	elif [[ $LOG_LINE == *"BUILD SUCCESS"* ]]; then
