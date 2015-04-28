@@ -1,0 +1,15 @@
+#!/bin/bash
+echo "Monitoring $1"
+echo "Press [CTRL+C] to stop.."
+
+prevs=""
+
+while true
+do
+  s=`du -s -h $1 | cut -d '/' -f 1`
+  if [ "$prevs" != "$s" ]; then
+    echo `date +"%T"` "   $s"
+    prevs=$s
+  fi
+  sleep 3
+done
