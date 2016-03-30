@@ -1,0 +1,3 @@
+#!/bin/bash
+# Prints project version from pom.xml. Useful for commands like "git tag $(mvnver) && git push origin $(mvnver)"
+mvn org.apache.maven.plugins:maven-help-plugin:2.1.1:evaluate -Dexpression=project.version | grep -v '\['
