@@ -38,5 +38,5 @@ name='Krusader'
 
 [custom-keybindings/custom7]
 binding='<Alt>e'
-command='showwin "sun-awt-X11-XFramePeer.jetbrains-idea-ce" idea.sh'
+command='showwin "sun-awt-X11-XFramePeer.jetbrains-idea" idea.sh'
 name='IntelliJ Idea'
