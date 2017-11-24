@@ -3,12 +3,12 @@ custom-keybindings=['/org/gnome/settings-daemon/plugins/media-keys/custom-keybin
 
 [custom-keybindings/custom0]
 binding='<Alt>f'
-command='showwin "Mozilla Firefox" firefox'
+command='showwin "Mozilla Firefox$" firefox'
 name='Firefox'
 
 [custom-keybindings/custom1]
 binding='<Alt>p'
-command='showwin "Mozilla Firefox (Private Browsing)" "firefox -private-window"'
+command='showwin "Mozilla Firefox (Private Browsing)$" "firefox -private-window"'
 name='Firefox Private'
 
 [custom-keybindings/custom2]
@@ -23,7 +23,7 @@ name='Chromium'
 
 [custom-keybindings/custom4]
 binding='<Alt>t'
-command='showwin "konsole.konsole" konsole'
+command='showwin "terminator.Terminator" terminator'
 name='Terminal'
 
 [custom-keybindings/custom5]
