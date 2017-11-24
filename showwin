@@ -4,12 +4,18 @@
 
 SWITCH_DIR="/tmp/showwin/$1"
 mkdir -p "$SWITCH_DIR"
+PINNED=`ls "$SWITCH_DIR"`
+echo "$1\|^$PINNED"
 
-MATCHED=`wmctrl -l -x | grep -i "$1"`
+MATCHED=`wmctrl -l -x | grep -i "$1\|^$PINNED "`
+if [[ -z $MATCHED && -z $2 ]]; then
+  echo Assigning new window
+  MATCHED=`wmctrl -l -x`
+fi
+
 CURRENT=`xdotool getwindowfocus getwindowname`
 MATCHED_CURRENT=`echo "$MATCHED" | grep -F "$CURRENT" | head -1 | cut -d" " -f1`
 
-PINNED=`ls "$SWITCH_DIR"`
 MATCHED_PINNED=`echo "$MATCHED" | grep "^$PINNED"`
 
 if [[ -n $MATCHED_PINNED ]]; then
@@ -25,6 +31,6 @@ elif [[ -n $MATCHED ]]; then
   echo Switching to window $WINID
   wmctrl -a $WINID -i
 else
-  echo Opening new window $2&
+  echo Opening new window $2
   $2&
 fi
