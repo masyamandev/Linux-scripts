@@ -11,12 +11,12 @@ rm -r "$LAST_DIR"
 ln -s "$SWITCH_DIR" "$LAST_DIR"
 
 PINNED=`ls "$SWITCH_DIR"`
-echo "$1\|^$PINNED"
 
 MATCHED=`wmctrl -l -x | grep -i "$1\|^$PINNED "`
 if [[ -z $MATCHED && -z $2 ]]; then
   echo Assigning new window
   MATCHED=`wmctrl -l -x`
+  PINNED=
 fi
 
 CURRENT=`xdotool getwindowfocus`
