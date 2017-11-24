@@ -66,14 +66,14 @@ Uuid={2873ea69-1349-4636-87a1-769d49be21d3}
 [Data_1_10_11]
 Comment=Comment
 Enabled=true
-Name=Remove window
+Name=Detach last window
 Type=SIMPLE_ACTION_DATA
 
 [Data_1_10_11Actions]
 ActionsCount=1
 
 [Data_1_10_11Actions0]
-CommandURL=showwinRemoveCurrent
+CommandURL=showwinDetach
 Type=COMMAND_URL
 
 [Data_1_10_11Conditions]
@@ -373,7 +373,7 @@ Type=SIMPLE_ACTION_DATA
 ActionsCount=1
 
 [Data_1_3Actions0]
-CommandURL=showwin "chromium-browser.Chromium-browser" chromium-browser
+CommandURL=showwin "chromium-browser.Chromium-browser N*" chromium-browser
 Type=COMMAND_URL
 
 [Data_1_3Conditions]
@@ -399,7 +399,7 @@ Type=SIMPLE_ACTION_DATA
 ActionsCount=1
 
 [Data_1_4Actions0]
-CommandURL=showwin "chromium-browser.Chromium-browser" "chromium-browser --incognito"
+CommandURL=showwin "chromium-browser.Chromium-browser I*" "chromium-browser --incognito"
 Type=COMMAND_URL
 
 [Data_1_4Conditions]
