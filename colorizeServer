@@ -1,5 +1,29 @@
 #!/bin/bash
-echo AppServer notificator started
+#echo AppServer notificator started
+
+RED='\033[1;31m'
+GREEN='\033[1;32m'
+YELLOW='\033[1;33m'
+BLUE='\033[1;34m'
+MAGENTA='\033[1;35m'
+CYAN='\033[1;36m'
+WHITE='\033[1;37m'
+GRAY='\033[0;37m'
+
+GRAYD='\033[0;90m'
+YELLOWD='\033[0;33m'
+BLUED='\033[0;34m'
+CYAND='\033[0;36m'
+NC='\033[0m'
+
+USELESSINFO="\(\?:\[[a-zA-Z0-9\.\$:_-]\+\] *\)\?"
+DELIMITER="\([:-] *\)"
+TIME="\([ 0-9:,\.-]\+ *\)"
+INFO="\(\[\?INFO\]\? *\)"
+DEBUG="\(\[\?DEBUG\]\? *\)"
+CLASS="\([a-zA-Z0-9\.\$:_]\+ *\)"
+EXCEPTION="\(Exception\)"
+ANYTHING="\(.*\)"
 
 LAST_SHOW_TIME=0
 
@@ -8,15 +32,21 @@ function notify {
 	INTERVAL=`expr $CURRENT_TIME - $LAST_SHOW_TIME`
 	if [ $INTERVAL -gt 1 ]
 	then
-		notify-send -i "$1" "$2" "$3"
+		notify-send -i "$1" "$2" `decolorize "$3"`
 	fi
 	LAST_SHOW_TIME=$CURRENT_TIME
 }
 
 function echoColor {
 	if [ $# -ge 2 ]; then
-		#echo "$1"
-		echo -e "\e[$2m$1\e[00m"
+		LINE=`decolorize "$1"`
+		echo -e "$2$LINE$NC"
+	fi
+}
+function echoPattern {
+	if [ $# -ge 2 ]; then
+		LINE=`decolorize "$1"`
+		echo -e "$2$LINE$NC"
 	fi
 }
 
@@ -27,25 +57,29 @@ IFS='' # don't remove leading whitespaces
 while read -e LOG_LINE
 do
 	if [[ $LOG_LINE == *"ERROR"* ]]; then
-		echoColor "$LOG_LINE" "1;31"
+		echoColor "$LOG_LINE" $RED
 		notify "$ERROR_ICON" "AppServer" "$LOG_LINE"
 	elif [[ $LOG_LINE == *"Deploying web application archive"* ]] ; then
-		echoColor "$LOG_LINE" "1;34"
-	elif [[ $LOG_LINE == *"Started in"* ]] || [[ $LOG_LINE == *"startup in"* ]] || [[ $LOG_LINE == *"Started Jetty Server"* ]] ; then
-		echoColor "$LOG_LINE" "1;32"
+		echoColor "$LOG_LINE" $BLUE
+	elif [[ $LOG_LINE == *"Started in"* ]] || [[ $LOG_LINE == *"startup in"* ]] || [[ $LOG_LINE == *"Started Jetty Server"* ]] || [[ $LOG_LINE == *"Jetty started"* ]] || [[ $LOG_LINE == *"FrameworkServlet 'dispatcherServlet': initialization completed"* ]] ; then
+		echoColor "$LOG_LINE" $GREEN
 		notify "$INFO_ICON" "AppServer" "$LOG_LINE"
 	elif [[ $LOG_LINE == *"(JBoss Shutdown Hook:) Shutdown complete"* ]]; then
-		echoColor "$LOG_LINE" "1;32"
+		echoColor "$LOG_LINE" $GREEN
 		notify "$INFO_ICON" "AppServer" "$LOG_LINE"
 	elif [[ $LOG_LINE == *"WARN"* ]]; then
-		echoColor "$LOG_LINE" "1;33"
-	elif [[ $LOG_LINE == *"DEBUG"* ]]; then
-		echoColor "$LOG_LINE" "0;37"
+		echoColor "$LOG_LINE" $YELLOW
+	elif [[ $LOG_LINE == *"TRACE"* ]]; then
+		echoColor "$LOG_LINE" $GRAYD
 	elif [[ $LOG_LINE == *"SYSOUT"* ]]; then
-		echoColor "$LOG_LINE" "0;33"
+		echoColor "$LOG_LINE" $YELLOWD
 	else
-		echoColor "$LOG_LINE" "00"
+		echo -e `echo "$LOG_LINE" | sed \
+            -e "s/^$TIME$INFO$CLASS$DELIMITER$ANYTHING/\\\\$GRAYD\1\\\\$BLUE\2\\\\$CYAND\3\\\\$GRAYD\4\\\\$NC\5\\\\$NC/" \
+            -e "s/^$TIME$DEBUG$CLASS$DELIMITER$ANYTHING/\\\\$GRAYD\1\\\\$BLUED\2\\\\$CYAND\3\\\\$GRAYD\4\\\\$GRAYD\5\\\\$NC/" \
+            -e "s/$EXCEPTION/\\\\$RED\1\\\\$NC/" \
+            `
 	fi
 done
 
-echo AppServer notificator finished
+#echo AppServer notificator finished

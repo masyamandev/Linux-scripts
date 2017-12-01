@@ -2,8 +2,8 @@
 
 function echoColor {
 	if [ $# -ge 2 ]; then
-		#echo "$1"
-		echo -e "\e[$2m$1\e[00m"
+		LINE=`decolorize "$1"`
+		echo -e "\e[$2m$LINE\e[00m"
 	fi
 }
 
@@ -31,6 +31,6 @@ do
 	elif [[ $LOG_LINE == *"SYSOUT"* ]]; then
 		echoColor "$LOG_LINE" "0;33"
 	else
-		echoColor "$LOG_LINE" "00"
+		echo "$LOG_LINE"
 	fi
 done
