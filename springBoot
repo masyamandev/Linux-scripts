@@ -1,3 +1,3 @@
 #!/bin/bash
 mvnc clean install -DskipTests=true
-script -q -c "java -jar `ls ./target/*.war` $*" | colorizeServer
+script -q -c "java -jar `ls ./target/*.?ar` $*" | colorizeServer
